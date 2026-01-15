@@ -1,0 +1,1171 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Elite Access • Free Claim</title>
+  <style>
+    :root{
+      --panel:rgba(255,255,255,.04);
+      --line:rgba(255,215,0,.22);
+      --gold1:#ffd700;
+      --gold2:#caa53a;
+      --text:#f3f3f3;
+      --muted:#a7a7a7;
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --r: 22px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:22px;
+      color:var(--text);
+      font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background:
+        radial-gradient(1200px 700px at 20% 10%, rgba(255,215,0,.10), transparent 60%),
+        radial-gradient(900px 560px at 90% 20%, rgba(202,165,58,.10), transparent 55%),
+        linear-gradient(135deg, #050505, #0f0f12);
+    }
+    .wrap{width:min(1020px,100%); display:grid; gap:14px; grid-template-columns: 1.1fr .9fr;}
+    @media (max-width:900px){ .wrap{grid-template-columns: 1fr;} }
+
+    .top{grid-column: 1 / -1; text-align:center; padding:10px 10px 0;}
+    .badge{
+      display:inline-flex; gap:8px; align-items:center;
+      padding:8px 12px; border-radius:999px;
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,215,0,.10), rgba(255,255,255,.02));
+      box-shadow: 0 0 28px rgba(255,215,0,.10);
+      font-size:12px; color:#ffeaa6;
+      cursor:pointer;
+      user-select:none;
+    }
+    h1{
+      margin:12px 0 6px;
+      font-size:30px; letter-spacing:.2px; font-weight:900;
+      background: linear-gradient(90deg, var(--gold1), #fff1a8, var(--gold2));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .sub{margin:0; color:var(--muted); font-size:13px}
+
+    .card{
+      border-radius: var(--r);
+      border:1px solid rgba(255,215,0,.18);
+      background: linear-gradient(180deg, var(--panel), rgba(255,255,255,.02));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .shine{
+      position:absolute; inset:-80px -140px auto auto;
+      width:280px; height:280px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,215,0,.35), transparent 60%);
+      filter: blur(10px);
+      transform: rotate(25deg);
+      pointer-events:none;
+    }
+    .card .in{padding:16px}
+    .row{display:flex; gap:12px; flex-wrap:wrap}
+    .stat{
+      flex:1; min-width:200px;
+      border-radius:18px;
+      border:1px solid rgba(255,215,0,.16);
+      background: rgba(0,0,0,.25);
+      padding:12px;
+    }
+    .k{font-size:12px; color:var(--muted); margin-bottom:6px}
+    .v{display:flex; align-items:baseline; justify-content:space-between; gap:10px}
+    .num{font-size:22px; font-weight:900; color:var(--gold1)}
+    .pill{
+      font-size:11px; padding:6px 10px; border-radius:999px;
+      border:1px solid rgba(255,215,0,.25);
+      background: rgba(255,215,0,.08);
+      color:#ffeaa6; white-space:nowrap;
+    }
+
+    .btn{
+      width:100%;
+      border:none;
+      border-radius:16px;
+      padding:14px 14px;
+      cursor:pointer;
+      font-weight:900;
+      letter-spacing:.2px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      user-select:none;
+      transition: transform .08s ease, filter .2s ease, opacity .2s ease;
+    }
+    .btn:active{transform: scale(.99)}
+    .ghost{
+      color: var(--gold1);
+      background: rgba(0,0,0,.15);
+      border:1px solid rgba(255,215,0,.30);
+    }
+    .primary{
+      color:#111;
+      background: linear-gradient(135deg, var(--gold1), #fff1a8, var(--gold2));
+      box-shadow: 0 10px 30px rgba(255,215,0,.18);
+    }
+    .btn[disabled]{opacity:.55; cursor:not-allowed}
+
+    /* Premium Join Buttons */
+    .joinGlow{
+      position:relative; overflow:hidden;
+      border:1px solid rgba(255,215,0,.42) !important;
+      background: linear-gradient(180deg, rgba(255,215,0,.12), rgba(0,0,0,.18)) !important;
+      box-shadow: 0 12px 40px rgba(255,215,0,.10);
+    }
+    .joinGlow::before{
+      content:"";
+      position:absolute;
+      top:-40%; left:-30%;
+      width:60%; height:220%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
+      transform: rotate(22deg);
+      animation: shineMove 2.6s linear infinite;
+      pointer-events:none;
+    }
+    @keyframes shineMove{
+      from{ transform: translateX(-30%) rotate(22deg); }
+      to{ transform: translateX(220%) rotate(22deg); }
+    }
+
+    /* Upload */
+    .drop{margin-top:12px; border-radius:18px; border: 2px dashed rgba(255,215,0,.40); background: rgba(0,0,0,.22); padding:14px;}
+    .dropArea{
+      border-radius:14px;
+      background: rgba(255,255,255,.03);
+      padding:14px;
+      display:flex;
+      gap:14px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .dropArea.drag{outline:2px solid rgba(255,215,0,.35); filter: brightness(1.05)}
+    .dropLeft{display:flex; gap:12px; align-items:center}
+    .ic{
+      width:44px; height:44px; border-radius:14px;
+      border:1px solid rgba(255,215,0,.22);
+      background: rgba(255,215,0,.08);
+      display:grid; place-items:center;
+      color:#ffeaa6; font-weight:900;
+    }
+    .dropText{font-size:13px; color:var(--muted); line-height:1.35}
+    .dropText b{color:#ffeaa6}
+    .pick{
+      padding:10px 12px; border-radius:14px;
+      border:1px solid rgba(255,215,0,.25);
+      background: rgba(255,215,0,.10);
+      color:#ffeaa6; font-weight:900;
+      cursor:pointer; white-space:nowrap;
+    }
+    input[type=file]{display:none}
+
+    .preview{
+      margin-top:12px;
+      display:none;
+      gap:12px;
+      align-items:center;
+      border-radius:16px;
+      padding:12px;
+      border:1px solid rgba(255,215,0,.16);
+      background: rgba(0,0,0,.22);
+    }
+    .thumb{
+      width:54px; height:54px; border-radius:14px; overflow:hidden;
+      border:1px solid rgba(255,215,0,.22); background:#0b0b0b;
+      flex:0 0 auto;
+    }
+    .thumb img{width:100%; height:100%; object-fit:cover}
+    .meta{flex:1}
+    .meta .fn{font-weight:900}
+    .meta .sz{font-size:12px; color:var(--muted); margin-top:2px}
+    .status{
+      font-size:12px; padding:7px 10px; border-radius:999px;
+      border:1px solid rgba(255,215,0,.25);
+      background: rgba(255,215,0,.08);
+      color:#ffeaa6; white-space:nowrap;
+    }
+    .bar{
+      margin-top:10px; height:10px; border-radius:999px;
+      background: rgba(255,255,255,.06);
+      overflow:hidden;
+      border:1px solid rgba(255,215,0,.12);
+    }
+    .bar > div{
+      height:100%; width:0%;
+      background: linear-gradient(90deg, var(--gold2), var(--gold1), #fff1a8);
+      transition: width .25s ease;
+    }
+
+    .panel{
+      display:none; margin-top:12px;
+      border-radius:18px; padding:14px;
+      border:1px solid rgba(255,215,0,.18);
+      background: rgba(0,0,0,.25);
+      animation: pop .22s ease;
+    }
+    .panel h3{margin:0 0 8px; color:#ffeaa6; font-size:14px}
+    .note{margin-top:10px; font-size:12px; color:var(--muted)}
+
+    .codeBox{
+      display:flex; gap:10px; align-items:center; justify-content:space-between;
+      padding:12px; border-radius:16px;
+      border:1px solid rgba(255,215,0,.18);
+      background: rgba(255,255,255,.03);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono";
+      font-size:13px; word-break:break-all;
+    }
+    .miniBtn{
+      padding:10px 12px; border-radius:14px;
+      border:1px solid rgba(255,215,0,.25);
+      background: rgba(255,215,0,.10);
+      color:#ffeaa6; font-weight:900;
+      cursor:pointer; white-space:nowrap;
+    }
+    .steps{margin:0; padding-left:18px; color:#e8e8e8; font-size:13px; line-height:1.6}
+
+    /* Admin side */
+    .adminHead{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;}
+    textarea{
+      width:100%; min-height:180px; resize:vertical;
+      border-radius:16px;
+      border:1px solid rgba(255,215,0,.18);
+      background: rgba(0,0,0,.28);
+      color:#fff; padding:12px;
+      outline:none; font-size:13px; line-height:1.5;
+    }
+    textarea::placeholder{color:#777}
+    .adminHint{font-size:12px; color:var(--muted); margin-top:8px; line-height:1.45}
+    .two{display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:12px}
+    @media (max-width:520px){ .two{grid-template-columns:1fr} }
+
+    /* History */
+    .historyList{
+      margin:0; padding:0; list-style:none;
+      display:flex; flex-direction:column; gap:10px;
+    }
+    .hitem{
+      border-radius:16px;
+      border:1px solid rgba(255,215,0,.14);
+      background: rgba(255,255,255,.03);
+      padding:12px;
+      display:flex; gap:10px; justify-content:space-between; align-items:flex-start;
+    }
+    .hleft{min-width:0}
+    .htime{font-size:12px; color:var(--muted); margin-bottom:6px}
+    .hval{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono";
+      font-size:13px;
+      word-break:break-all;
+      color:#ffeaa6;
+      font-weight:800;
+    }
+    .htag{
+      font-size:11px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,215,0,.22);
+      background: rgba(255,215,0,.08);
+      color:#ffeaa6;
+      white-space:nowrap;
+    }
+
+    /* Toast */
+    .toast{
+      position: fixed; left:50%; bottom:18px; transform: translateX(-50%);
+      background: rgba(15,15,15,.92);
+      border:1px solid rgba(255,215,0,.25);
+      color:#fff; padding:12px 14px; border-radius:14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.45);
+      display:none; width:min(760px, calc(100% - 24px)); max-width:760px;
+      font-size:13px; line-height:1.35; z-index:50;
+    }
+    .toast b{color:#ffeaa6}
+    @keyframes pop{from{transform: translateY(6px); opacity:0} to{transform: translateY(0); opacity:1}}
+
+    /* Modal */
+    .modalWrap{
+      position:fixed; inset:0;
+      display:none;
+      align-items:center; justify-content:center;
+      background: rgba(0,0,0,.55);
+      backdrop-filter: blur(4px);
+      z-index:80;
+      padding:18px;
+    }
+    .modal{
+      width:min(420px,100%);
+      border-radius:20px;
+      border:1px solid rgba(255,215,0,.22);
+      background: linear-gradient(180deg, rgba(20,20,20,.92), rgba(10,10,10,.92));
+      box-shadow: 0 18px 60px rgba(0,0,0,.7);
+      padding:16px;
+      position:relative;
+      overflow:hidden;
+    }
+    .modal h3{margin:0 0 6px; color:#ffeaa6; font-size:15px}
+    .modal p{margin:0 0 12px; color:var(--muted); font-size:12px; line-height:1.4}
+    .field{
+      display:flex; gap:10px; align-items:center;
+      padding:12px; border-radius:16px;
+      border:1px solid rgba(255,215,0,.18);
+      background: rgba(255,255,255,.03);
+      margin-bottom:12px;
+    }
+    .field input{
+      width:100%;
+      border:none; outline:none;
+      background:transparent;
+      color:#fff;
+      font-size:14px;
+      letter-spacing:.5px;
+    }
+    .xbtn{
+      position:absolute; top:10px; right:10px;
+      width:38px; height:38px;
+      border-radius:14px;
+      border:1px solid rgba(255,215,0,.18);
+      background: rgba(255,255,255,.03);
+      color:#ffeaa6;
+      cursor:pointer;
+    }
+    .miniRow{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+
+    /* Multi preview thumbs */
+    .proofThumb{
+      width:100%;
+      aspect-ratio:1/1;
+      border-radius:14px;
+      overflow:hidden;
+      border:1px solid rgba(255,215,0,.22);
+      background:#0b0b0b;
+    }
+    .proofThumb img{width:100%; height:100%; object-fit:cover}
+    @media (max-width:520px){
+      #multiPreviewGrid{grid-template-columns:repeat(3,1fr)!important;}
+    }
+
+    /* Admin locked effect (always visible) */
+    .locked {
+      position: relative;
+      opacity: .38;
+      filter: blur(1px);
+      pointer-events: none;
+    }
+    .locked::after{
+      content: "🔒 ADMIN TERKUNCI — LOGIN DENGAN PIN";
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: rgba(0,0,0,.65);
+      color:#ffd700;
+      font-weight:900;
+      font-size:14px;
+      border-radius: 16px;
+      filter: none;
+      pointer-events:none;
+      padding:14px;
+      text-align:center;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="badge" id="secretSpot">AM PREM BY ZAKA</div>
+      <h1>TUTOR LOGIN  JOIN  😎 GRUP DAN 🤑 CHANNEL GAK BISA MASUK CHAT ADMIN</h1>
+      <p class="sub">Join → Upload bukti join grup dan channel (maks foto 10, min 2 = 1 grup, 1 channel) → Claim (stok -1) → Riwayat di device</p>
+    </div>
+
+    <!-- CLAIM SIDE -->
+    <div class="card">
+      <div class="shine"></div>
+      <div class="in">
+        <div class="row">
+          <div class="stat">
+            <div class="k">Stok tersedia</div>
+            <div class="v">
+              <div class="num" id="stockNum">0</div>
+              <div class="pill" id="stockState">LOADING</div>
+            </div>
+          </div>
+          <div class="stat">
+            <div class="k">Kuota device</div>
+            <div class="v">
+              <div class="num" style="font-size:16px;color:#ffeaa6" id="quotaText">-</div>
+              <div class="pill" id="quotaPill">-</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:12px">
+          <div class="stat">
+            <div class="k">Status verifikasi</div>
+            <div class="v">
+              <div class="num" style="font-size:16px;color:#ffeaa6" id="verifText">Belum upload</div>
+              <div class="pill" id="verifPill">PENDING</div>
+            </div>
+            <div class="note" style="margin-top:8px">
+              Wajib upload <b>minimal 2</b> bukti (channel + grup). Maks 10 gambar.
+            </div>
+          </div>
+        </div>
+
+        <div class="two" style="margin-top:12px">
+          <button class="btn ghost joinGlow" id="btnCh">📣 JOIN CHANNEL</button>
+          <button class="btn ghost joinGlow" id="btnGr">👥 JOIN GRUP</button>
+        </div>
+
+        <div class="drop">
+          <div class="dropArea" id="dropArea">
+            <div class="dropLeft">
+              <div class="ic">SS</div>
+              <div class="dropText">
+                <b>Upload Bukti Join</b><br/>
+                Pilih sampai 10 gambar (JPG/PNG)
+              </div>
+            </div>
+            <label class="pick" for="file">PILIH FILE</label>
+            <input id="file" type="file" accept="image/*" multiple />
+          </div>
+
+          <div class="preview" id="preview">
+            <div class="thumb"><img id="thumbImg" alt="preview"/></div>
+            <div class="meta">
+              <div class="fn" id="fileName">-</div>
+              <div class="sz" id="fileSize">-</div>
+              <div class="bar"><div id="barFill"></div></div>
+            </div>
+            <div class="status" id="fileStatus">Menunggu</div>
+          </div>
+
+          <div class="panel" id="multiPreviewPanel" style="display:none; margin-top:12px">
+            <h3>🖼️ Bukti Upload</h3>
+            <div id="multiPreviewGrid" style="display:grid; grid-template-columns:repeat(5,1fr); gap:10px"></div>
+            <div class="note">Upload minimal 2, maksimal 10.</div>
+          </div>
+        </div>
+
+        <button class="btn primary" id="btnClaim">⚡ CLAIM</button>
+
+        <div class="panel" id="result">
+          <h3>✅ Item kamu</h3>
+          <div class="codeBox">
+            <div id="codeOut">-</div>
+            <button class="miniBtn" id="btnCopy">COPY</button>
+          </div>
+          <div class="note">Item diambil dari list stok yang admin simpan.</div>
+        </div>
+
+        <div class="panel" id="tutor">
+          <h3>📌 Tutor</h3>
+          <ol class="steps">
+            <li>Tutor belum diisi admin.</li>
+          </ol>
+          <div class="note">Riwayat claim tersimpan di device ini.</div>
+        </div>
+
+        <!-- Admin contact -->
+        <div class="panel" style="display:block; margin-top:12px">
+          <h3>👑 Admin Contact</h3>
+          <div class="codeBox">
+            <div id="adminNumText">-</div>
+            <button class="miniBtn" id="btnCopyAdmin">COPY</button>
+          </div>
+          <div class="two" style="margin-top:10px">
+            <button class="btn ghost" id="btnWaAdmin">💬 CHAT ADMIN</button>
+            <button class="btn ghost" id="btnAdminLogin">🔐 ADMIN PANEL</button>
+          </div>
+          <div class="note">Kalau klaim bermasalah, chat admin ya.</div>
+        </div>
+
+        <!-- HISTORY -->
+        <div class="panel" id="historyPanel" style="display:block; margin-top:12px">
+          <div class="adminHead" style="margin-bottom:10px">
+            <div>
+              <div style="font-weight:900;color:#ffeaa6;font-size:14px">Riwayat Claim (Device Ini)</div>
+              <div class="k" style="margin:6px 0 0">Maks 20 terakhir</div>
+            </div>
+            <span class="pill" id="histCount">0</span>
+          </div>
+          <ul class="historyList" id="historyList"></ul>
+          <div class="two" style="margin-top:12px">
+            <button class="btn ghost" id="btnClearHistory">🧹 HAPUS RIWAYAT</button>
+            <button class="btn ghost" id="btnResetDevice">🔁 RESET LIMIT,BUKTI, HISTORY</button>
+          </div>
+          <div class="note">Reset device = hapus limit claim + bukti + history (di device ini).</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADMIN SIDE (ALWAYS VISIBLE BUT LOCKED) -->
+    <div class="card" id="adminCard">
+      <div class="shine"></div>
+      <div class="in">
+        <div class="adminHead">
+          <div>
+            <div style="font-weight:900;color:#ffeaa6;font-size:14px">Admin • Stok & Tutor</div>
+            <div class="k" style="margin:6px 0 0">1 baris = 1 item stok</div>
+          </div>
+          <div class="pill" id="adminState">LOCKED</div>
+        </div>
+
+        <div id="adminBody">
+          <textarea id="adminList" placeholder="Tempel list stok di sini (1 baris 1 item)
+Contoh:
+KODE-001
+KODE-002
+KODE-003"></textarea>
+
+          <textarea id="adminTutor" placeholder="TUTOR (akan tampil ke user setelah claim)
+Contoh:
+1) Pastikan sudah join channel + grup
+2) Item yang kamu dapat: gunakan sesuai kebutuhan
+3) Jika error, chat admin"></textarea>
+
+          <div class="two" style="margin-top:12px">
+            <button class="btn primary" id="btnSave">💾 SAVE</button>
+            <button class="btn ghost" id="btnExport">⬇️ EXPORT</button>
+            <button class="btn ghost" id="btnResetStock">🧹 RESET STOCK</button>
+            <button class="btn ghost" id="btnLogout">🚪 LOGOUT</button>
+          </div>
+
+          <div class="panel" style="display:block; margin-top:12px">
+            <h3>📥 Import Stok (.txt)</h3>
+            <div class="codeBox">
+              <div style="color:#ffeaa6;font-weight:800">1 baris = 1 item</div>
+              <label class="miniBtn" for="stockTxt">PILIH TXT</label>
+              <input id="stockTxt" type="file" accept=".txt,text/plain" style="display:none" />
+            </div>
+            <div class="two" style="margin-top:10px">
+              <button class="btn ghost" id="btnImportReplace">IMPORT REPLACE</button>
+              <button class="btn ghost" id="btnImportAppend">IMPORT APPEND</button>
+            </div>
+            <div class="note">Replace = ganti total stok. Append = nambah ke stok sekarang (auto dedup).</div>
+          </div>
+
+          <div class="note">
+            *Admin panel ini HTML-only. PIN buat ngunci dari user awam.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+  </div>
+
+  <!-- ADMIN LOGIN MODAL -->
+  <div class="modalWrap" id="modalWrap">
+    <div class="modal">
+      <button class="xbtn" id="modalClose">✕</button>
+      <h3>🔐 Admin Login</h3>
+      <p>Masukkan PIN untuk membuka admin  panel.</p>
+
+      <div class="field">
+        <span class="pill">PIN</span>
+        <input id="pinInput" type="password" inputmode="numeric" placeholder="••••••" />
+      </div>
+
+      <div class="miniRow">
+        <button class="btn primary" id="btnLoginDo">LOGIN</button>
+        <button class="btn ghost" id="btnLoginCancel">BATAL</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* ======================
+   CONFIG (EDIT INI)
+====================== */
+const CONFIG = {
+  channelLink: "https://t.me/aboutZaka",
+  groupLink: "https://t.me/roampubliczaka",
+
+  adminNumberText: "0878-8510-6388",   // tampilan
+  adminWaNumber: "6287885106388",      // WA format 62
+
+  storeKey: "elite_stock_list_v4",
+  claimOnceKey: "elite_claim_once_v4",
+  historyKey: "elite_claim_history_v4",
+  adminSessionKey: "elite_admin_session_v4",
+  tutorKey: "elite_tutor_v4",
+
+  adminPin: "838949"
+};
+
+/* ======================
+   Helpers
+====================== */
+const $ = (id)=>document.getElementById(id);
+function show(el){ el.style.display="block"; }
+function hide(el){ el.style.display="none"; }
+function toast(html){
+  const t = $("toast");
+  t.innerHTML = html;
+  t.style.display="block";
+  clearTimeout(window.__t);
+  window.__t = setTimeout(()=>t.style.display="none", 3200);
+}
+function bytes(n){
+  const u=["B","KB","MB","GB"]; let i=0; let v=n;
+  while(v>1024 && i<u.length-1){ v/=1024; i++; }
+  return `${v.toFixed(v>=10||i===0?0:1)} ${u[i]}`;
+}
+function escapeHtml(s){
+  return s.replace(/[&<>"']/g, (c)=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[c]));
+}
+function parseLines(text){
+  return text.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+}
+
+/* ======================
+   Stock list (localStorage)
+====================== */
+function getList(){
+  const raw = localStorage.getItem(CONFIG.storeKey);
+  if(!raw) return [];
+  try{ const arr = JSON.parse(raw); return Array.isArray(arr) ? arr : []; }
+  catch(e){ return []; }
+}
+function setList(arr){
+  localStorage.setItem(CONFIG.storeKey, JSON.stringify(arr));
+  renderStock();
+}
+function renderStock(){
+  const list = getList();
+  $("stockNum").textContent = list.length;
+
+  if(list.length<=0){
+    $("stockState").textContent="HABIS";
+    $("btnClaim").disabled = true;
+  } else if(list.length<=20){
+    $("stockState").textContent="HAMPIR HABIS";
+    $("btnClaim").disabled = false;
+  } else {
+    $("stockState").textContent="READY";
+    $("btnClaim").disabled = false;
+  }
+
+  if(alreadyClaimed()) $("btnClaim").disabled = true;
+  // juga lock kalau bukti belum cukup
+  if(uploadedCount < 2) $("btnClaim").disabled = true;
+}
+
+/* ======================
+   Quota 1x / device
+====================== */
+function alreadyClaimed(){
+  return localStorage.getItem(CONFIG.claimOnceKey) === "1";
+}
+function markClaimed(){ localStorage.setItem(CONFIG.claimOnceKey, "1"); }
+function clearClaimed(){ localStorage.removeItem(CONFIG.claimOnceKey); }
+function renderQuotaUI(){
+  if(alreadyClaimed()){
+    $("quotaText").textContent = "0/1";
+    $("quotaPill").textContent = "LOCKED";
+    $("btnClaim").disabled = true;
+  }else{
+    $("quotaText").textContent = "1/1";
+    $("quotaPill").textContent = "AVAILABLE";
+  }
+}
+
+/* ======================
+   Tutor from admin
+====================== */
+function getTutor(){
+  return localStorage.getItem(CONFIG.tutorKey) || "";
+}
+function setTutor(text){
+  localStorage.setItem(CONFIG.tutorKey, text || "");
+}
+function renderTutorToUser(){
+  const t = (getTutor() || "").trim();
+  const tutorPanel = $("tutor");
+  if(!tutorPanel) return;
+
+  const list = t.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+  const ol = tutorPanel.querySelector("ol.steps");
+  if(ol){
+    ol.innerHTML = list.length
+      ? list.map(x=>`<li>${escapeHtml(x)}</li>`).join("")
+      : "<li>Tutor belum diisi admin.</li>";
+  }
+}
+
+/* ======================
+   History
+====================== */
+function getHistory(){
+  const raw = localStorage.getItem(CONFIG.historyKey);
+  if(!raw) return [];
+  try{ const arr = JSON.parse(raw); return Array.isArray(arr) ? arr : []; }
+  catch(e){ return []; }
+}
+function setHistory(arr){
+  localStorage.setItem(CONFIG.historyKey, JSON.stringify(arr));
+  renderHistory();
+}
+function addHistory(item){
+  const arr = getHistory();
+  arr.unshift({ t: new Date().toISOString(), item });
+  setHistory(arr.slice(0, 20));
+}
+function fmtTime(iso){
+  try{ return new Date(iso).toLocaleString(); }
+  catch(e){ return iso; }
+}
+function renderHistory(){
+  const list = getHistory();
+  $("histCount").textContent = String(list.length);
+  const ul = $("historyList");
+  ul.innerHTML = "";
+
+  if(list.length === 0){
+    const li = document.createElement("li");
+    li.className = "hitem";
+    li.innerHTML = `
+      <div class="hleft">
+        <div class="htime">Belum ada riwayat</div>
+        <div class="hval">—</div>
+      </div>
+      <div class="htag">EMPTY</div>`;
+    ul.appendChild(li);
+    return;
+  }
+
+  for(const h of list){
+    const li = document.createElement("li");
+    li.className = "hitem";
+    li.innerHTML = `
+      <div class="hleft">
+        <div class="htime">${fmtTime(h.t)}</div>
+        <div class="hval">${escapeHtml(String(h.item))}</div>
+      </div>
+      <div class="htag">CLAIMED</div>`;
+    ul.appendChild(li);
+  }
+}
+
+/* ======================
+   Admin session (always visible but locked)
+====================== */
+function isAdmin(){
+  return localStorage.getItem(CONFIG.adminSessionKey) === "1";
+}
+function setAdmin(on){
+  if(on) localStorage.setItem(CONFIG.adminSessionKey, "1");
+  else localStorage.removeItem(CONFIG.adminSessionKey);
+  renderAdminUI();
+}
+function renderAdminUI(){
+  const body = $("adminBody");
+  const state = $("adminState");
+
+  if(isAdmin()){
+    state.textContent = "UNLOCKED";
+    body.classList.remove("locked");
+  } else {
+    state.textContent = "LOCKED";
+    body.classList.add("locked");
+  }
+}
+function requireAdmin(){
+  if(!isAdmin()){
+    toast("🔐 Admin terkunci. Login dulu.");
+    return false;
+  }
+  return true;
+}
+
+/* ======================
+   Join buttons (always there)
+====================== */
+$("btnCh").onclick = ()=>window.open(CONFIG.channelLink,"_blank");
+$("btnGr").onclick = ()=>window.open(CONFIG.groupLink,"_blank");
+
+/* ======================
+   Admin Contact
+====================== */
+(function adminContactInit(){
+  $("adminNumText").textContent = CONFIG.adminNumberText || "-";
+  $("btnWaAdmin").onclick = () => {
+    const wa = (CONFIG.adminWaNumber || "").trim();
+    if(!wa) return toast("Nomor WA admin belum di-set.");
+    window.open(`https://wa.me/${wa}`, "_blank");
+  };
+  $("btnCopyAdmin").onclick = async () => {
+    const t = (CONFIG.adminNumberText || "").trim();
+    if(!t) return toast("Nomor admin kosong.");
+    try{
+      await navigator.clipboard.writeText(t);
+      toast("📋 Nomor admin berhasil di-<b>copy</b>.");
+    }catch(e){
+      toast("Copy gagal. Blok manual aja ya.");
+    }
+  };
+})();
+
+/* ======================
+   Upload detection (max 10, min 2)
+====================== */
+let uploadedOk = false;
+let uploadedCount = 0;
+
+function setVerif(state){
+  if(state==="ok"){
+    $("verifText").textContent=`Terdeteksi ✅ (${uploadedCount}/10)`;
+    $("verifPill").textContent= uploadedCount>=2 ? "VERIFIED" : "NEED 2+";
+  } else if(state==="bad"){
+    $("verifText").textContent="Gagal";
+    $("verifPill").textContent="FAILED";
+  } else {
+    $("verifText").textContent="Belum upload";
+    $("verifPill").textContent="PENDING";
+  }
+}
+
+function handleFile(file){
+  if(!file) return;
+  if(!file.type.startsWith("image/")){
+    toast("File harus <b>gambar</b> (JPG/PNG).");
+    uploadedOk=false; setVerif("bad");
+    return;
+  }
+
+  uploadedOk=false;
+  hide($("result")); hide($("tutor"));
+  show($("preview"));
+
+  $("fileName").textContent=file.name;
+  $("fileSize").textContent=bytes(file.size);
+  $("fileStatus").textContent="Scanning…";
+  $("barFill").style.width="0%";
+  setVerif("pending");
+
+  const reader = new FileReader();
+  reader.onload = (e)=>{ $("thumbImg").src = e.target.result; };
+  reader.readAsDataURL(file);
+
+  let p=0;
+  const timer=setInterval(()=>{
+    p += Math.floor(Math.random()*16)+8;
+    if(p>=100) p=100;
+    $("barFill").style.width = p+"%";
+    if(p===100){
+      clearInterval(timer);
+      $("fileStatus").textContent="Detected ✅";
+      uploadedOk=true;
+
+      // verified kalau minimal 2 upload
+      setVerif("ok");
+      if(uploadedCount >= 2){
+        toast("✅ Bukti upload <b>terdeteksi</b>. Kamu bisa claim.");
+      } else {
+        toast("⚠️ Upload minimal <b>2</b> bukti (channel + grup) ya.");
+      }
+
+      renderStock(); // refresh disable/enable claim
+    }
+  },180);
+}
+
+function handleFiles(files){
+  if(!files || files.length === 0) return;
+
+  const imgs = files.filter(f => f && f.type && f.type.startsWith("image/")).slice(0, 10);
+  if(imgs.length === 0){
+    toast("File harus <b>gambar</b> (JPG/PNG).");
+    uploadedOk=false; setVerif("bad");
+    return;
+  }
+  if(files.length > 10){
+    toast("Maks upload <b>10</b> gambar. Sisanya dipotong otomatis.");
+  }
+
+  uploadedCount = imgs.length;
+
+  const grid = $("multiPreviewGrid");
+  grid.innerHTML = "";
+  imgs.forEach(file=>{
+    const wrap = document.createElement("div");
+    wrap.className = "proofThumb";
+    const img = document.createElement("img");
+    wrap.appendChild(img);
+    grid.appendChild(wrap);
+
+    const r = new FileReader();
+    r.onload = (ev)=>{ img.src = ev.target.result; };
+    r.readAsDataURL(file);
+  });
+  show($("multiPreviewPanel"));
+
+  // scan pakai file pertama
+  handleFile(imgs[0]);
+}
+
+$("file").addEventListener("change",(e)=>{
+  handleFiles(Array.from(e.target.files || []));
+});
+
+const drop=$("dropArea");
+drop.addEventListener("dragover",(e)=>{ e.preventDefault(); drop.classList.add("drag"); });
+drop.addEventListener("dragleave",()=>drop.classList.remove("drag"));
+drop.addEventListener("drop",(e)=>{
+  e.preventDefault(); drop.classList.remove("drag");
+  handleFiles(Array.from(e.dataTransfer.files || []));
+});
+
+/* ======================
+   Claim
+====================== */
+$("btnClaim").onclick = ()=>{
+  if(alreadyClaimed()){
+    toast("⚠️ Device ini sudah <b>claim 1x</b>.");
+    return;
+  }
+  if(uploadedCount < 2 || !uploadedOk){
+    toast("Upload bukti <b>minimal 2</b> sampai Detected ya 😅");
+    return;
+  }
+  const list=getList();
+  if(list.length<=0){
+    toast("Stok <b>habis</b>. Admin perlu isi list.");
+    return;
+  }
+
+  const item = list.shift();
+  setList(list);
+  markClaimed();
+  addHistory(item);
+
+  $("codeOut").textContent=item;
+  show($("result"));
+  show($("tutor"));
+  renderTutorToUser();
+
+  renderQuotaUI();
+  toast("✅ Claim sukses. Stok -1 & riwayat tersimpan.");
+};
+
+/* Copy item */
+$("btnCopy").onclick = async ()=>{
+  const t = $("codeOut").textContent || "";
+  try{ await navigator.clipboard.writeText(t); toast("📋 Berhasil di-<b>copy</b>."); }
+  catch(e){ toast("Copy gagal. Blok manual aja ya."); }
+};
+
+/* Clear history */
+$("btnClearHistory").onclick = ()=>{
+  setHistory([]);
+  toast("🧹 Riwayat dihapus (device ini).");
+};
+
+/* Reset device */
+$("btnResetDevice").onclick = ()=>{
+  if(confirm("Reset device? Ini hapus limit claim + history + bukti (di device ini).")){
+    clearClaimed();
+    setHistory([]);
+    uploadedOk=false;
+    uploadedCount=0;
+    hide($("multiPreviewPanel"));
+    hide($("preview"));
+    hide($("result"));
+    hide($("tutor"));
+    setVerif("pending");
+    renderQuotaUI();
+    renderStock();
+    toast("🔁 Reset device selesai.");
+  }
+};
+
+/* ======================
+   Admin modal controls
+====================== */
+function openModal(){
+  $("pinInput").value = "";
+  show($("modalWrap"));
+  setTimeout(()=>$("pinInput").focus(), 50);
+}
+function closeModal(){ hide($("modalWrap")); }
+
+$("btnAdminLogin").onclick = ()=>{
+  if(isAdmin()){ toast("Admin sudah login ✅"); return; }
+  openModal();
+};
+$("modalClose").onclick = closeModal;
+$("btnLoginCancel").onclick = closeModal;
+$("modalWrap").addEventListener("click",(e)=>{ if(e.target.id==="modalWrap") closeModal(); });
+$("pinInput").addEventListener("keydown",(e)=>{ if(e.key==="Enter") $("btnLoginDo").click(); });
+
+$("btnLoginDo").onclick = ()=>{
+  const pin = $("pinInput").value.trim();
+  if(pin === CONFIG.adminPin){
+    setAdmin(true);
+    closeModal();
+    toast("🔓 Admin login <b>berhasil</b>.");
+    // load tutor to textarea
+    $("adminTutor").value = getTutor();
+  } else toast("❌ PIN salah.");
+};
+
+/* Secret shortcut: tap badge 3x */
+(function secretTripleTap(){
+  const spot = $("secretSpot");
+  let taps = 0;
+  let tmr = null;
+  const reset = () => { taps = 0; if(tmr) clearTimeout(tmr); tmr = null; };
+
+  spot.addEventListener("click", () => {
+    if(isAdmin()){ toast("Admin sudah login ✅"); return; }
+    taps++;
+    if(!tmr) tmr = setTimeout(() => reset(), 900);
+    if(taps >= 3){
+      reset();
+      openModal();
+      toast("🔐 Admin shortcut detected");
+    }
+  });
+})();
+
+/* ======================
+   Admin actions
+====================== */
+$("btnSave").onclick = ()=>{
+  if(!requireAdmin()) return;
+  const lines=parseLines($("adminList").value);
+  if(lines.length===0){
+    toast("List masih kosong. Tempel minimal <b>1 baris</b>.");
+    return;
+  }
+  // dedup
+  const seen=new Set(); const cleaned=[];
+  for(const x of lines){ if(!seen.has(x)){ seen.add(x); cleaned.push(x); } }
+  setList(cleaned);
+
+  // save tutor
+  setTutor($("adminTutor").value || "");
+  toast(`💾 Tersimpan: <b>${cleaned.length}</b> item + tutor.`);
+};
+
+$("btnExport").onclick = ()=>{
+  if(!requireAdmin()) return;
+  $("adminList").value = getList().join("\n");
+  $("adminTutor").value = getTutor();
+  toast("⬇️ Export sukses.");
+};
+
+$("btnResetStock").onclick = ()=>{
+  if(!requireAdmin()) return;
+  setList([]);
+  $("adminList").value="";
+  toast("🧹 Stok di-reset.");
+};
+
+$("btnLogout").onclick = ()=>{
+  if(!requireAdmin()) return;
+  setAdmin(false);
+  toast("🚪 Logout admin. Terkunci lagi.");
+};
+
+/* ======================
+   Import stok .txt
+====================== */
+let __importLines = [];
+
+function readTxtFile(file){
+  return new Promise((resolve,reject)=>{
+    const r = new FileReader();
+    r.onload = ()=> resolve(String(r.result || ""));
+    r.onerror = ()=> reject(new Error("Gagal baca file"));
+    r.readAsText(file);
+  });
+}
+
+$("stockTxt").addEventListener("change", async (e)=>{
+  if(!requireAdmin()) { e.target.value=""; return; }
+  const f = e.target.files && e.target.files[0];
+  if(!f) return;
+
+  try{
+    const text = await readTxtFile(f);
+    __importLines = parseLines(text);
+    toast(`📥 File kebaca: <b>${__importLines.length}</b> baris.`);
+  }catch(err){
+    toast("❌ Gagal baca file .txt");
+  }finally{
+    e.target.value = "";
+  }
+});
+
+$("btnImportReplace").addEventListener("click", ()=>{
+  if(!requireAdmin()) return;
+  if(!__importLines.length) return toast("Pilih file .txt dulu.");
+  setList(__importLines);
+  $("adminList").value = __importLines.join("\n");
+  toast(`✅ Import Replace: <b>${__importLines.length}</b> item.`);
+});
+
+$("btnImportAppend").addEventListener("click", ()=>{
+  if(!requireAdmin()) return;
+  if(!__importLines.length) return toast("Pilih file .txt dulu.");
+  const current = getList();
+  const merged = current.concat(__importLines);
+
+  // dedup
+  const seen = new Set();
+  const cleaned = [];
+  for(const x of merged){
+    if(!seen.has(x)){ seen.add(x); cleaned.push(x); }
+  }
+
+  setList(cleaned);
+  $("adminList").value = cleaned.join("\n");
+  toast(`✅ Import Append: total sekarang <b>${cleaned.length}</b> item.`);
+});
+
+/* ======================
+   Init
+====================== */
+function setVerifInit(){
+  uploadedOk=false;
+  uploadedCount=0;
+  $("verifText").textContent="Belum upload";
+  $("verifPill").textContent="PENDING";
+}
+setVerifInit();
+renderStock();
+renderQuotaUI();
+renderHistory();
+renderAdminUI();
+renderTutorToUser();
+
+/* force join buttons visible */
+(function lockJoinButtons(){
+  const ch = $("btnCh");
+  const gr = $("btnGr");
+  const force = () => {
+    ch.style.display = "flex";
+    gr.style.display = "flex";
+    ch.disabled = false;
+    gr.disabled = false;
+  };
+  force();
+  setInterval(force, 1500);
+})();
+</script>
+</body>
+</html>
